@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_error.c                                       :+:      :+:    :+:   */
+/*   free_error_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yorimek <yorimek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:55:55 by yorimek           #+#    #+#             */
-/*   Updated: 2025/12/22 10:06:45 by yorimek          ###   ########.fr       */
+/*   Updated: 2025/12/22 12:57:27 by yorimek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	ft_error_and_free(t_map_data *data, char *msg)
 {
@@ -41,12 +41,14 @@ int	ft_check_error(t_map_data *data)
 		return (ft_error_and_free(data, WRONG_EXIT));
 	if (save_res_check == 4)
 		return (ft_error_and_free(data, WRONG_PLAYER));
+	if (save_res_check == 5)
+		return (ft_error_and_free(data, NO_ENEMY));
 	if (!ft_map_is_solvable(data))
 		return (ft_error_and_free(data, PATH_WRONG));
 	return (0);
 }
 
-int	ft_close_game(t_data *data)
+void	ft_destroy_image(t_data *data)
 {
 	if (data->floor)
 		mlx_destroy_image(data->mlx_ptr, data->floor);
@@ -66,6 +68,26 @@ int	ft_close_game(t_data *data)
 		mlx_destroy_image(data->mlx_ptr, data->wall);
 	if (data->win_ptr)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	ft_free_enemy_img(data);
+	return ;
+}
+
+void	ft_free_enemy_img(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < 5)
+	{
+		if (data->enemy_img[i])
+			mlx_destroy_image(data->mlx_ptr, data->enemy_img[i]);
+		i++;
+	}
+}
+
+int	ft_close_game(t_data *data)
+{
+	ft_destroy_image(data);
 	mlx_destroy_display(data->mlx_ptr);
 	free (data->mlx_ptr);
 	ft_error_and_free(data->map_data, "Game has been close properly !");

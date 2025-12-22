@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yorimek <yorimek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 12:00:56 by yorimek           #+#    #+#             */
-/*   Updated: 2025/12/22 11:18:57 by yorimek          ###   ########.fr       */
+/*   Updated: 2025/12/22 13:04:48 by yorimek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	ft_initialize_struct(t_map_data *map_data, t_data *data)
 {
@@ -21,6 +21,10 @@ void	ft_initialize_struct(t_map_data *map_data, t_data *data)
 	map_data->player = 0;
 	map_data->p_pos_y = 0;
 	map_data->p_pos_x = 0;
+	map_data->enemy = 0;
+	map_data->e_pos_y = 0;
+	map_data->e_pos_x = 0;
+	map_data->e_dir = 1;
 	data->wall = NULL;
 	data->floor = NULL;
 	data->exit = NULL;
@@ -69,10 +73,11 @@ void	ft_lunch_game(t_data *game, t_map_data *map_data)
 {
 	game->mlx_ptr = mlx_init();
 	game->win_ptr = mlx_new_window(game->mlx_ptr, map_data->width * 32,
-			map_data->height * 32, "So_Long");
+			map_data->height * 32, "So_Long_Bonus");
 	ft_init_textures(game);
 	ft_put_image_wnd(game, map_data);
 	mlx_key_hook(game->win_ptr, ft_handle_input, game);
 	mlx_hook(game->win_ptr, 17, 0L, ft_close_game, game);
+	mlx_loop_hook(game->mlx_ptr, ft_animation_game, game);
 	mlx_loop(game->mlx_ptr);
 }

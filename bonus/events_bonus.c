@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   events.c                                           :+:      :+:    :+:   */
+/*   events_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yorimek <yorimek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 11:56:17 by yorimek           #+#    #+#             */
-/*   Updated: 2025/12/22 11:18:36 by yorimek          ###   ########.fr       */
+/*   Updated: 2025/12/22 13:17:04 by yorimek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	ft_end_game(t_data *data, int x, int y)
 {
 	if (data->map_data->map[y][x] == EXIT && !data->map_data->collec)
 	{
 		ft_printf("Congratulations, you finished the game !!!!\n");
+		ft_close_game(data);
+	}
+	if (data->map_data->map[y][x] == ENEMY)
+	{
+		ft_printf("Game Over ! You were defeated by an enemy !!\n");
 		ft_close_game(data);
 	}
 	return ;
@@ -52,7 +57,7 @@ void	ft_check_move(t_data *data, int x, int y)
 		data->map_data->p_pos_y += y;
 		ft_check_move_utils(data, x, y);
 		data->nb_mvt++;
-		ft_printf("Nombres de mouvements = %d\n", data->nb_mvt);
+		ft_print_moves(data);
 	}
 	return ;
 }
